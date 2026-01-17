@@ -1,4 +1,4 @@
-![LivingRoom Logo](logo.png)
+<img src="logo.png" alt="LivingRoom Logo" width="50%">
 
 # LivingRoom
 
