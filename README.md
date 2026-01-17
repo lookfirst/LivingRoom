@@ -1,3 +1,5 @@
+![LivingRoom Logo](logo.png)
+
 # LivingRoom
 
 A trivial macOS application that automatically reconnects your AirPlay audio devices after sleep/wake.
