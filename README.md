@@ -4,7 +4,7 @@
 
 A trivial macOS application that automatically reconnects your AirPlay audio devices after sleep/wake.
 
-100% vibe-coded with Claude.
+100% vibe-coded with Claude. Logo/Icon by ChatGPT.
 
 ## The Problem
 
