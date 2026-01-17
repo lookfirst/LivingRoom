@@ -18,7 +18,7 @@ This app automatically re-selects your AirPlay device whenever your Mac wakes fr
 
 - Automatically checks and prompts for accessibility permissions
 - Runs automatically when screen is unlocked
-- Configurable device name via menu bar
+- Configurable device name
 - Launch at login option (macOS 13.0+)
 - Stores settings in `~/.config/LivingRoom/config.json`
 - App with minimal UI, intentionally sits in the Dock so that it can be easily run with command-r
