@@ -7,15 +7,41 @@ on run argv
         set deviceName to item 1 of argv
     end if
 
-    tell application "System Events"
-        tell process "ControlCenter"
-            -- Find and click Sound menu bar item
-            set soundItem to first menu bar item of menu bar 1 whose description contains "sound"
-            click soundItem
-            delay 0.8
+    set maxAttempts to 3
+    repeat with attempt from 1 to maxAttempts
+        try
+            return my setOutputToDevice(deviceName)
+        on error errMsg number errNum
+            if attempt is maxAttempts then
+                error errMsg number errNum
+            end if
+            delay 0.5
+        end try
+    end repeat
+end run
 
-            -- Look for the window that appears
-            if exists window 1 then
+on setOutputToDevice(deviceName)
+    with timeout of 8 seconds
+        tell application "System Events"
+            if not (exists process "ControlCenter") then
+                error "ControlCenter process not found"
+            end if
+            tell process "ControlCenter"
+                -- Find and click Sound menu bar item
+                set soundItem to first menu bar item of menu bar 1 whose description contains "sound"
+                click soundItem
+                delay 0.6
+
+                -- Look for the window that appears
+                repeat 20 times
+                    if exists window 1 then exit repeat
+                    delay 0.1
+                end repeat
+                if not (exists window 1) then
+                    key code 53 -- Escape key
+                    error "Sound output window did not appear"
+                end if
+
                 tell window 1
                     tell group 1
                         tell scroll area 1
@@ -44,7 +70,7 @@ on run argv
                         end tell
                     end tell
                 end tell
-            end if
+            end tell
         end tell
-    end tell
-end run
+    end timeout
+end setOutputToDevice
