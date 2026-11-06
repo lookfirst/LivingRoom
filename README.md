@@ -62,6 +62,8 @@ cp -r build/LivingRoom.app /Applications/
 
 Note, if you replace the app with a new version, you might have to do the Accessibility dance again by removing the app first and then adding it back in again.
 
+Set Sound to always show in the macOS menu bar in System Settings. The script searches every menu bar in MenuBarAgent, ControlCenter, and SystemUIServer, including controls nested inside groups. It identifies Sound by its Accessibility identifier (`com.apple.menuextra.sound`), with description matching for older macOS versions. Device selection still uses the ControlCenter Sound popup. If no Sound control is found, the script reports that explicitly.
+
 ## Requirements
 
 - macOS 13.0+
