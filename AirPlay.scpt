@@ -26,10 +26,42 @@ on setOutputToDevice(deviceName)
             if not (exists process "ControlCenter") then
                 error "ControlCenter process not found"
             end if
+            -- Menu bar controls and their popups need not belong to the same process.
+            set soundItem to missing value
+            repeat with ownerName in {"MenuBarAgent", "ControlCenter", "SystemUIServer"}
+                if exists process (contents of ownerName) then
+                    tell process (contents of ownerName)
+                        repeat with menuBar in (get every menu bar)
+                            -- Newer macOS nests items in groups and omits their descriptions.
+                            repeat with menuItem in (get entire contents of menuBar)
+                                if class of menuItem is menu bar item then
+                                    set isSound to false
+                                    try
+                                        set isSound to (value of attribute "AXIdentifier" of menuItem is "com.apple.menuextra.sound")
+                                    end try
+                                    if not isSound then
+                                        try
+                                            set isSound to (description of menuItem contains "sound")
+                                        end try
+                                    end if
+                                    if isSound then
+                                        set soundItem to contents of menuItem
+                                        exit repeat
+                                    end if
+                                end if
+                            end repeat
+                            if soundItem is not missing value then exit repeat
+                        end repeat
+                    end tell
+                end if
+                if soundItem is not missing value then exit repeat
+            end repeat
+            if soundItem is missing value then
+                error "Sound control not found. Set Sound to always show in the macOS menu bar."
+            end if
+            click soundItem
+
             tell process "ControlCenter"
-                -- Find and click Sound menu bar item
-                set soundItem to first menu bar item of menu bar 1 whose description contains "sound"
-                click soundItem
                 delay 0.6
 
                 -- Look for the window that appears
